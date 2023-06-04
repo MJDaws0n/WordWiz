@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <title>WordWiz</title>
+</head>
+<body>
+  <h1>WordWiz</h1>
+  <div id="game-container">
+    <h3>Make words using 10 letters</h3>
+    <h4 style="text-align: right; padding-right: 20%;">Attempts Left: <span id="attempts">10</span></h4>
+    <h4 style="text-align: right; padding-right: 20%;">Score: <span id="score">0</span></h4>
+    <h4 style="text-align: center;">Make a words using only:</h4>
+    <div class="words">
+        <div class="letters" id="letter0"></div>
+        <div class="letters" id="letter1">B</div>
+        <div class="letters" id="letter2">C</div>
+        <div class="letters" id="letter3">D</div>
+        <div class="letters" id="letter4">E</div>
+        <div class="letters" id="letter5">F</div>
+        <div class="letters" id="letter6">G</div>
+        <div class="letters" id="letter7">H</div>
+        <div class="letters" id="letter8">I</div>
+        <div class="letters" id="letter9">J</div>
+    </div>
+
+    <div id="inputs">
+        <form onsubmit="submitWord()" id="formSubmit">
+            <input type="text" id="word" class="no-copy-paste" name="word">
+            <input type="submit" id="submitWord" value="Submit">
+        </form>
+    </div>
+
+    <div>
+        <h4 style="text-align: center;">Found Words:</h4>
+        <div id="foundWords"></div>
+    </div>
+  </div>
+</body>
+</html>
+<style>
+    body{
+        font-family: 'Roboto Slab', serif;
+    }
+    .letters{
+        border: 1px solid black;
+        width: 10%;
+        float:left;
+        text-align: center;
+    }
+    .words{
+        padding: 10px 5% 0 5%;
+    }
+    #word{
+        width: 90%;
+        margin: 0 5% 0 5%;
+        text-align: center;
+        text-transform: uppercase;
+    }
+    .error{
+        box-shadow: 0 0 20px 15px #e43c26;
+        transition: all 0.3s;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+const usableLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "v"];
+
+var usedWords = [];
+
+const attemptsValue = document.getElementById("attempts");
+const scoreValue = document.getElementById("score");
+
+var attempts = 10;
+var score = 0;
+
+var alive = true;
+
+for(i = 0; i < 10; i++){
+    document.getElementById(`letter${i}`).textContent = usableLetters[i].toLocaleUpperCase();
+}
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+if((getCookie('justifyAllowToMultiple') == "true")){
+    if(!getCookie('justifyAllowToMultiple')){
+        document.cookie = `score=Bg==; expires=${new Date(new Date().setHours(23,59,59,999)).toUTCString()}; path=/`;
+        window.location.replace("gameOver.html");
+    }
+    window.location.replace("gameOver.html");
+}
+
+function capitalizeFirstLetter(str) {
+  let lowerCaseStr = str.toLowerCase();
+  let capitalizedStr = lowerCaseStr.charAt(0).toUpperCase() + lowerCaseStr.slice(1);
+  return capitalizedStr;
+}
+
+function isValidWord(input, callback) {
+  fetch('words.txt')
+    .then(response => response.text())
+    .then(fileContent => {
+      const words = fileContent.toUpperCase().split('\n');
+
+      const isInputValid = words.some(word => word.trim() === input.trim());
+
+      if (isInputValid) {
+        var valid = true;
+        for(i = 0; i < usedWords.length; i++){
+            if(input.trim() == usedWords[i]){
+                valid = false;
+            }
+        }
+        callback(valid);
+      } else {
+        callback(false);
+      }
+    })
+    .catch(error => {
+      console.error('Error loading file:', error);
+    });
+}
+
+document.getElementById("submitWord").addEventListener("click", function(event){
+    if(alive){
+        attempts--;
+        attemptsValue.textContent = attempts;
+        event.preventDefault();
+        const input = document.getElementById("word").value;
+        isValidWord(input.toUpperCase(), function(valid){
+            if(valid){
+                usedWords.push(input.toUpperCase());
+                document.getElementById("foundWords").innerHTML += `<p style="text-align: center;">${capitalizeFirstLetter(input)}</p>`;
+                score += input.length;
+                scoreValue.textContent = score;
+            } else{
+                document.getElementById("word").classList.add("error");
+            }
+        });
+    } else{
+        event.preventDefault();
+    }
+});
+
+document.getElementById('word').onkeydown = function (event) {
+    if(alive){
+        if(!((event.keyCode < 91 && event.keyCode > 64) || event.keyCode == 189 || event.keyCode == 13 || event.keyCode == 8)){
+            event.preventDefault();
+        } else{
+            document.getElementById("word").classList.remove("error");
+
+            if(event.keyCode < 91 && event.keyCode > 64){
+                var validLetter = false;
+                for(i = 0; i < 10; i++){
+                    if(event.key == usableLetters[i]){
+                        validLetter = true;
+                    }
+                }
+                if(!validLetter){
+                    event.preventDefault();
+                    document.getElementById("word").classList.add("error");
+                }
+            }
+        }
+    } else{
+        event.preventDefault();
+    }
+};
+
+function dgfhrdy7ufjhu5t6yjhdfr6tuhjfuityujtfu7itgfhjrtyujdtfghsdty(h, n) {
+  let a = '';
+  for (let i = 0; i < h.length; i++) {
+    const io = h.charCodeAt(i) ^ n.charCodeAt(i % n.length);
+    a += String.fromCharCode(io);
+  }
+  return btoa(a);
+}
+
+var intervalId = window.setInterval(function(){
+    checkAttempts()
+}, 100);
+
+function checkAttempts(){
+    if(attempts < 1){
+        alive = false;
+        window.location.replace("gameOver.html");
+        document.cookie = `score=${dgfhrdy7ufjhu5t6yjhdfr6tuhjfuityujtfu7itgfhjrtyujdtfghsdty(`${score}`, "687g5bt86hjtgyh")}; expires=${new Date(new Date().setHours(23,59,59,999)).toUTCString()}; path=/`;
+    }
+}
+
+
+// Try to prevent copy and paste
+document.addEventListener('contextmenu', event => event.preventDefault());
+
+$(document).ready(function() {
+    var ctrlDown = false,
+        ctrlKey = 17,
+        cmdKey = 91,
+        vKey = 86,
+        cKey = 67;
+
+    $(document).keydown(function(e) {
+        if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = true;
+    }).keyup(function(e) {
+        if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
+    });
+
+    $(".no-copy-paste").keydown(function(e) {
+        if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
+    });
+});
+
+</script>
+
+<style>
+    /* CSS RESET */
+    /* Box sizing rules */
+    *,
+    *::before,
+    *::after {
+    box-sizing: border-box;
+    }
+
+    /* Remove default margin */
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    figure,
+    blockquote,
+    dl,
+    dd {
+    margin: 0;
+    }
+
+    /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+    ul[role='list'],
+    ol[role='list'] {
+    list-style: none;
+    }
+
+    /* Set core root defaults */
+    html:focus-within {
+    scroll-behavior: smooth;
+    }
+
+    /* Set core body defaults */
+    body {
+    min-height: 100vh;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+    }
+
+    /* A elements that don't have a class get default styles */
+    a:not([class]) {
+    text-decoration-skip-ink: auto;
+    }
+
+    /* Make images easier to work with */
+    img,
+    picture {
+    max-width: 100%;
+    display: block;
+    }
+
+    /* Inherit fonts for inputs and buttons */
+    input,
+    button,
+    textarea,
+    select {
+    font: inherit;
+    }
+
+    /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+    @media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+    scroll-behavior: auto;
+    }
+    
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    }
+</style>

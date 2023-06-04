@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WordWiz - Game Over</title>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 32px;
+      margin-top: 50px;
+    }
+
+    #score {
+      font-size: 48px;
+      color: #ff5722;
+      margin-top: 20px;
+    }
+
+    #high-score {
+      margin-top: 50px;
+      color: #999;
+    }
+
+    #high-score h3 {
+      font-weight: bold;
+      color: #333;
+      font-size: 27px;
+    }
+
+    #name {
+      margin-top: 10px;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Game Over!</h1>
+  <span id="score">Your Score: <span id="score-value">Invalid Score</span></span>
+  <div id="high-score">
+    <h3>Highest Score:</h3>
+    <div id="scores">
+    <p id="name">Coming soon - <span id="heigh-score">1001</span></p>
+    <div>
+  </div>
+</body>
+</html>
+
+<script>
+function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+function sdfgherthnfgyitr7urthr6thfyujrt6hfghjr6uyhruyrh4h(g, k) {
+  const bg = atob(g);
+  let dfg = '';
+  for (let i = 0; i < bg.length; i++) {
+    const kj = bg.charCodeAt(i) ^ k.charCodeAt(i % k.length);
+    dfg += String.fromCharCode(kj);
+  }
+  return dfg;
+}
+
+document.getElementById("score-value").innerText = sdfgherthnfgyitr7urthr6thfyujrt6hfghjr6uyhruyrh4h(getCookie('score'), "687g5bt86hjtgyh");
+
+document.cookie = `justifyAllowToMultiple=true; expires=${new Date(new Date().setHours(23,59,59,999)).toUTCString()}; path=/`;
+</script>
